@@ -1,23 +1,22 @@
 version: 0.2
-
-
 phases:
+  install:
+    commands:
+      - echo install step...
   pre_build:
-   commands:
-     - echo Logging in to Amazon ECR.....
-     - aws --version
-     - $(aws ecr get-login --no-include-email --region us-east-1)
-     - REPOSITORY_URI=125571554996.dkr.ecr.us-east-1.amazonaws.com/codebuilddockerimges
-     - COMMIT-HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION 
+    commands:
+      - echo logging in to AWS ECR...
+      - $(aws ecr get-login --no-include-email --region us-west-2)
   build:
-   commands:
-    - echo Build started on `date`
-    - echo Building the Docker image...
-    - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
- post_build:
-  commands:
-   - echo Build completed on `date`
-   - echo Pushing the Docker images...
-   - docker push $REPOSITORY_URI:$IMAGE_TAG
-   - echo Writing image definitions file...
-   - printf '[{"name":"ecs-cicd-nginx","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+    commands:
+      - echo build Docker image on `date`
+      - cd src
+      - docker build -t sample-express-app:latest .
+      - docker tag sample-express-app:latest <125571554996.dkr.ecr.us-east-1.amazonaws.com/codebuilddockerimges>/sample-express-app:latest
+  post_build:
+    commands:
+      - echo build Docker image complete `date`
+      - echo push latest Docker images to ECR...
+      - docker push <125571554996.dkr.ecr.us-east-1.amazonaws.com/codebuilddockerimges>/sample-express-app:latest
+
+
