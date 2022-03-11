@@ -8,7 +8,7 @@ phases:
      - aws --version
      - $(aws ecr get-login --no-include-email --region us-east-1)
      - REPOSITORY_URI=125571554996.dkr.ecr.us-east-1.amazonaws.com/codebuilddockerimges
-     - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION 
+     - COMMIT-HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION 
   build:
    commands:
     - echo Build started on `date`
