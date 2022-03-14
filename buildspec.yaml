@@ -5,6 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
+      - REPOSITORY_URI=125571554996.dkr.ecr.ap-southeast-1.amazonaws.com/codebuildimage   
   build:
     commands:
       - echo Build started on `date`
